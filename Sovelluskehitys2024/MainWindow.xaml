@@ -14,6 +14,8 @@
         <Label Content="Tuotteen hinta" HorizontalAlignment="Left" Margin="498,114,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.581,0.368"/>
         <TextBox x:Name="tuotehinta" HorizontalAlignment="Left" Margin="617,114,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="144" Height="26"/>
         <Button Content="Lisää tuote" HorizontalAlignment="Left" Margin="617,168,0,0" VerticalAlignment="Top" Width="144" Height="36" Click="Button_Click_1"/>
+        <ComboBox x:Name="tuotelista_cb" HorizontalAlignment="Left" Margin="617,270,0,0" VerticalAlignment="Top" Width="144"/>
+        <Button Content="Poista tuote" HorizontalAlignment="Left" Margin="617,310,0,0" VerticalAlignment="Top" Height="36" Width="144" Click="Button_Click_2"/>
 
     </Grid>
 </Window>
