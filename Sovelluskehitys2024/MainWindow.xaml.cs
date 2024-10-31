@@ -19,6 +19,7 @@ namespace Sovelluskehitys2024
     /// </summary>
     public partial class MainWindow : Window
     {
+        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\k5000833\\Documents\\testitietokanta.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True";
         public MainWindow()
         {
             InitializeComponent();
@@ -26,7 +27,6 @@ namespace Sovelluskehitys2024
 
         private void PaivitaDataGrid(object sender, RoutedEventArgs e)
         {
-            string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\k5000833\\Documents\\testitietokanta.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True";
             SqlConnection yhteys = new SqlConnection(polku);
             yhteys.Open();
 
@@ -45,7 +45,6 @@ namespace Sovelluskehitys2024
 
         private void PaivitaComboBox(object sender, RoutedEventArgs e)
         {
-            string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\k5000833\\Documents\\testitietokanta.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True";
             SqlConnection yhteys = new SqlConnection(polku);
             yhteys.Open();
 
@@ -77,7 +76,6 @@ namespace Sovelluskehitys2024
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\k5000833\\Documents\\testitietokanta.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True";
             SqlConnection yhteys = new SqlConnection(polku);
             yhteys.Open();
 
@@ -88,11 +86,22 @@ namespace Sovelluskehitys2024
             yhteys.Close();
 
             PaivitaDataGrid(sender, e);
+            PaivitaComboBox(sender, e);
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
+            SqlConnection yhteys = new SqlConnection(polku);
+            yhteys.Open();
 
+            string id = tuotelista_cb.SelectedValue.ToString();
+            string kysely = "DELETE FROM tuotteet WHERE nimi='" + id + "';";
+            SqlCommand komento = new SqlCommand(kysely, yhteys);
+            komento.ExecuteNonQuery();
+            yhteys.Close();
+
+            PaivitaDataGrid(sender, e);
+            PaivitaComboBox(sender, e);
         }
     }
 }
