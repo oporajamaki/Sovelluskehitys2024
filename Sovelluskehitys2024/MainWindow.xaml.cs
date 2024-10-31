@@ -45,17 +45,29 @@ namespace Sovelluskehitys2024
 
         private void PaivitaComboBox(object sender, RoutedEventArgs e)
         {
+            //tuotelista_cb.Items.Clear();
+
             SqlConnection yhteys = new SqlConnection(polku);
             yhteys.Open();
 
             SqlCommand komento = new SqlCommand("SELECT * FROM tuotteet", yhteys);
             SqlDataReader lukija = komento.ExecuteReader();
 
-            tuotelista_cb.Items.Clear();
+            DataTable taulu = new DataTable();
+            taulu.Columns.Add("ID",  typeof(string));
+            taulu.Columns.Add("NIMI", typeof(string));
 
-            while (lukija.Read())
+            /* tehdään sidokset että comboboxissa näytetää datataulua*/
+            tuotelista_cb.ItemsSource = taulu.DefaultView;
+            tuotelista_cb.DisplayMemberPath = "NIMI";
+            tuotelista_cb.SelectedValuePath = "ID";
+
+            while (lukija.Read()) // käsitellään kyselytulos rivi riviltä
             {
-                tuotelista_cb.Items.Add(lukija.GetString(1));
+                int id = lukija.GetInt32(0); 
+                string nimi = lukija.GetString(1);
+                taulu.Rows.Add(id, nimi); // lisätään datatauluun rivi tietoineen
+                //tuotelista_cb.Items.Add(lukija.GetString(1));
             }
             lukija.Close();
 
@@ -95,7 +107,7 @@ namespace Sovelluskehitys2024
             yhteys.Open();
 
             string id = tuotelista_cb.SelectedValue.ToString();
-            string kysely = "DELETE FROM tuotteet WHERE nimi='" + id + "';";
+            string kysely = "DELETE FROM tuotteet WHERE id='" + id + "';";
             SqlCommand komento = new SqlCommand(kysely, yhteys);
             komento.ExecuteNonQuery();
             yhteys.Close();
