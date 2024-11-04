@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,6 +20,7 @@ namespace Sovelluskehitys2024
     /// </summary>
     public partial class MainWindow : Window
     {
+        string polku = "Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\k2201452\\Documents\\testitietokanta.mdf; Integrated Security = True; Connect Timeout = 30;Encrypt=True";
         public MainWindow()
         {
             InitializeComponent();
@@ -26,7 +28,6 @@ namespace Sovelluskehitys2024
 
         private void PaivitaDataGrid(object sender, RoutedEventArgs e)
         {
-            string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\k5000833\\Documents\\testitietokanta.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True";
             SqlConnection yhteys = new SqlConnection(polku);
             yhteys.Open();
 
@@ -45,18 +46,28 @@ namespace Sovelluskehitys2024
 
         private void PaivitaComboBox(object sender, RoutedEventArgs e)
         {
-            string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\k5000833\\Documents\\testitietokanta.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True";
+            //            tuotelista_cb.Items.Clear();
             SqlConnection yhteys = new SqlConnection(polku);
             yhteys.Open();
 
             SqlCommand komento = new SqlCommand("SELECT * FROM tuotteet", yhteys);
             SqlDataReader lukija = komento.ExecuteReader();
 
-            tuotelista_cb.Items.Clear();
+            DataTable taulu = new DataTable();
+            taulu.Columns.Add("ID", typeof(string));
+            taulu.Columns.Add("NIMI", typeof(string));
 
-            while (lukija.Read())
+            /*tehdään sidokset että komboboxissa naytetään datataulua*/
+            tuotelista_cb.ItemsSource = taulu.DefaultView;
+            tuotelista_cb.DisplayMemberPath = "NIMI";
+            tuotelista_cb.SelectedValuePath = "ID";
+
+            while (lukija.Read()) //käsitellään kyselytulos rivi riviltä
             {
-                tuotelista_cb.Items.Add(lukija.GetString(1));
+                int id = lukija.GetInt32(0);
+                string nimi = lukija.GetString(1);
+                taulu.Rows.Add(id, nimi); //Lisätään datatauluun rivi tietoineen
+                //tuotelista_cb.Items.Add(lukija.GetString(1));
             }
             lukija.Close();
 
@@ -77,7 +88,6 @@ namespace Sovelluskehitys2024
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\k5000833\\Documents\\testitietokanta.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True";
             SqlConnection yhteys = new SqlConnection(polku);
             yhteys.Open();
 
@@ -88,10 +98,22 @@ namespace Sovelluskehitys2024
             yhteys.Close();
 
             PaivitaDataGrid(sender, e);
+            PaivitaComboBox(sender, e);
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
+            SqlConnection yhteys = new SqlConnection(polku);
+            yhteys.Open();
+
+            string id = tuotelista_cb.SelectedValue.ToString();
+            string kysely = "DELETE FROM tuotteet WHERE id='" + id + "';";
+            SqlCommand komento = new SqlCommand(kysely, yhteys);
+            komento.ExecuteNonQuery();
+            yhteys.Close();
+
+            PaivitaDataGrid(sender, e);
+            PaivitaComboBox(sender, e);
 
         }
     }
