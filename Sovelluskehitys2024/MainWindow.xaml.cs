@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,27 +24,30 @@ namespace Sovelluskehitys2024
         public MainWindow()
         {
             InitializeComponent();
+
+            PaivitaDataGrid("SELECT * FROM tuotteet", "tuotteet", tuotelista);
+            PaivitaDataGrid("SELECT * FROM asiakkaat", "asiakkaat", asiakaslista);
+            PaivitaComboBox();
         }
 
-        private void PaivitaDataGrid(object sender, RoutedEventArgs e)
+        private void PaivitaDataGrid(string kysely, string taulu, DataGrid grid)
         {
             SqlConnection yhteys = new SqlConnection(polku);
             yhteys.Open();
 
-            string kysely = "SELECT * FROM tuotteet";
             SqlCommand komento = yhteys.CreateCommand();
             komento.CommandText = kysely;
 
             SqlDataAdapter adapteri = new SqlDataAdapter(komento);
-            DataTable dt = new DataTable("tuotteet");
+            DataTable dt = new DataTable(taulu);
             adapteri.Fill(dt);
 
-            tuotelista.ItemsSource = dt.DefaultView;
+            grid.ItemsSource = dt.DefaultView;
 
             yhteys.Close();
         }
 
-        private void PaivitaComboBox(object sender, RoutedEventArgs e)
+        private void PaivitaComboBox()
         {
             //tuotelista_cb.Items.Clear();
 
@@ -76,8 +80,8 @@ namespace Sovelluskehitys2024
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            PaivitaDataGrid(sender, e);
-            PaivitaComboBox(sender, e);
+            PaivitaDataGrid("SELECT * FROM tuotteet", "tuotteet", tuotelista);
+            PaivitaComboBox();
 
         }
 
@@ -97,8 +101,8 @@ namespace Sovelluskehitys2024
 
             yhteys.Close();
 
-            PaivitaDataGrid(sender, e);
-            PaivitaComboBox(sender, e);
+            PaivitaDataGrid("SELECT * FROM tuotteet", "tuotteet", tuotelista);
+            PaivitaComboBox();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -112,8 +116,8 @@ namespace Sovelluskehitys2024
             komento.ExecuteNonQuery();
             yhteys.Close();
 
-            PaivitaDataGrid(sender, e);
-            PaivitaComboBox(sender, e);
+            PaivitaDataGrid("SELECT * FROM tuotteet", "tuotteet", tuotelista);
+            PaivitaComboBox();
         }
     }
 }
