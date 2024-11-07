@@ -122,5 +122,20 @@ namespace Sovelluskehitys2024
             PaivitaComboBox();
 
         }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            SqlConnection yhteys = new SqlConnection(polku);
+            yhteys.Open();
+
+            string kysely = "INSERT INTO asiakkaat (nimi,osoite,puhelin) VALUES ('" + asiakasnimi.Text + "','" + asiakasosoite.Text + "','" + asiakaspuhelin.Text +"');";
+            SqlCommand komento = new SqlCommand(kysely, yhteys);
+            komento.ExecuteNonQuery();
+
+            yhteys.Close();
+
+            PaivitaDataGrid("SELECT * FROM asiakkaat", "asiakkaat", asiakaslista);
+            PaivitaComboBox();
+        }
     }
 }
