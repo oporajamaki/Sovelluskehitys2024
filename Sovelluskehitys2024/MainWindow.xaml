@@ -27,6 +27,13 @@
             <TabItem Header="Asiakkaat">
                 <Grid Background="#FFE5E5E5">
                     <DataGrid x:Name="asiakaslista" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,28,385,120"/>
+                    <Label Content="Nimi" HorizontalAlignment="Left" Margin="472,32,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Puhelin" HorizontalAlignment="Left" Margin="472,92,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="asiakasnimi" HorizontalAlignment="Left" Margin="558,36,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="152" Height="22"/>
+                    <TextBox x:Name="asiakaspuhelin" HorizontalAlignment="Left" Margin="558,96,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="152" Height="22"/>
+                    <Button Content="Lisää asiakas" HorizontalAlignment="Left" Margin="558,223,0,0" VerticalAlignment="Top" Height="30" Width="120" Click="Button_Click_3"/>
+                    <Label Content="Osoite" HorizontalAlignment="Left" Margin="471,152,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="asiakasosoite" HorizontalAlignment="Left" Margin="558,156,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="152" Height="22"/>
                 </Grid>
             </TabItem>
         </TabControl>
