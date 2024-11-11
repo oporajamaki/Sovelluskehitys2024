@@ -7,7 +7,18 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TabControl>
+        <Menu DockPanel.Dock ="Top">
+            <MenuItem Header="_Tiedosto">
+                <MenuItem Header="_Avaa"></MenuItem>
+                <MenuItem Header="_Sulje"></MenuItem>
+                <MenuItem Header="_Tallenna"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Tietokanta">
+                <MenuItem Header="_Avaa"></MenuItem>
+                <MenuItem Header="_Sulje"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <TabControl Margin="0,20,0,0">
             <TabItem Header="Tuotelista">
                 <Grid Background="#FFE5E5E5">
                     <DataGrid x:Name="tuotelista" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,28,385,120"/>
@@ -37,6 +48,8 @@
                 </Grid>
             </TabItem>
         </TabControl>
-
+        <StatusBar VerticalAlignment="Bottom">
+            <TextBlock x:Name="tilaviesti" Text="Valmis"/>
+        </StatusBar>
     </Grid>
 </Window>
