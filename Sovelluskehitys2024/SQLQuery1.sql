@@ -6,13 +6,15 @@ CREATE TABLE tilaukset (id INTEGER IDENTITY(1,1) PRIMARY KEY, asiakas_id INTEGER
 
 INSERT INTO tuotteet (nimi, hinta) VALUES ('juusto', 6);
 INSERT INTO asiakkaat (nimi, osoite, puhelin) VALUES ('Masa', 'Kuusikuja 6', '050882682');
-INSERT INTO tilaukset (asiakas_id, tuote_id) VALUES (2,5); 
+INSERT INTO tilaukset (asiakas_id, tuote_id) VALUES (1,1); 
 
 DELETE FROM tuotteet WHERE id=5;
 
 SELECT * FROM tuotteet;
 SELECT * FROM asiakkaat;
 SELECT * FROM tilaukset;
+
+SELECT ti.id as id, a.nimi as asiakas, tu.nimi as tuote FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id
 
 DELETE FROM tuotteet WHERE nimi="kinkku";
 
