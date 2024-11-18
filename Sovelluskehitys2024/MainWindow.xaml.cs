@@ -29,7 +29,7 @@ namespace Sovelluskehitys2024
             {
                 PaivitaDataGrid("SELECT * FROM tuotteet", "tuotteet", tuotelista);
                 PaivitaDataGrid("SELECT * FROM asiakkaat", "asiakkaat", asiakaslista);
-                PaivitaDataGrid("SELECT ti.id as id, a.nimi as asiakas, tu.nimi as tuote FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id", "tilaukset", tilauslista);
+                PaivitaDataGrid("SELECT ti.id as id, a.nimi as asiakas, tu.nimi as tuote FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu='0'", "tilaukset", tilauslista);
                 PaivitaComboBox(tuotelista_cb, tuotelista_cb_2);
                 PaivitaAsiakasComboBox();
             }
@@ -197,14 +197,25 @@ namespace Sovelluskehitys2024
 
             yhteys.Close();
 
-            PaivitaDataGrid("SELECT ti.id as id, a.nimi as asiakas, tu.nimi as tuote FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id", "tilaukset", tilauslista);
+            PaivitaDataGrid("SELECT ti.id as id, a.nimi as asiakas, tu.nimi as tuote FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu='0'", "tilaukset", tilauslista);
         }
 
         private void toimita_tilaus_Click(object sender, RoutedEventArgs e)
         {
+            DataRowView rivinakyma = (DataRowView)((Button)e.Source).DataContext;
+            String tilaus_id = rivinakyma[0].ToString();
+            
             SqlConnection yhteys = new SqlConnection(polku);
             yhteys.Open();
+
+            string sql = "UPDATE tilaukset SET toimitettu=1 WHERE id='" + tilaus_id + "';";
+
+            SqlCommand komento = new SqlCommand(sql, yhteys);
+            komento.ExecuteNonQuery();
+
             yhteys.Close();
+
+            PaivitaDataGrid("SELECT ti.id as id, a.nimi as asiakas, tu.nimi as tuote FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu='0'", "tilaukset", tilauslista);
         }
         
     }
