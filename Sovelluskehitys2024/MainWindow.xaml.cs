@@ -199,5 +199,13 @@ namespace Sovelluskehitys2024
 
             PaivitaDataGrid("SELECT ti.id as id, a.nimi as asiakas, tu.nimi as tuote FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id", "tilaukset", tilauslista);
         }
+
+        private void toimita_tilaus_Click(object sender, RoutedEventArgs e)
+        {
+            SqlConnection yhteys = new SqlConnection(polku);
+            yhteys.Open();
+            yhteys.Close();
+        }
+        
     }
 }
