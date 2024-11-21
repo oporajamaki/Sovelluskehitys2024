@@ -20,7 +20,7 @@ namespace Sovelluskehitys2024
     /// </summary>
     public partial class MainWindow : Window
     {
-        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\k5000833\\Documents\\testitietokanta.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True";
+        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\k2201452\\Documents\\testitietokanta.mdf;Integrated Security=True;Connect Timeout=30";
         public MainWindow()
         {
             InitializeComponent();
