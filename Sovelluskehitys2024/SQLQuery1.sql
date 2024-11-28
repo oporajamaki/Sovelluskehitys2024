@@ -21,3 +21,46 @@ SELECT ti.id as id, a.nimi as asiakas, tu.nimi as tuote FROM tilaukset ti, asiak
 DELETE FROM tuotteet WHERE nimi="kinkku";
 
 DROP TABLE tilaukset;
+
+CREATE TABLE Tuotteet (
+    TuoteID INTEGER IDENTITY(1,1) PRIMARY KEY,
+    Artisti VARCHAR(100) NOT NULL,
+    Levyn_Nimi VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Asiakkaat (
+    AsiakasID INT IDENTITY(1,1) PRIMARY KEY,
+    Nimi VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL
+);
+ALTER TABLE Tuotteet
+ADD Hinta DECIMAL(10, 2) NOT NULL;
+
+CREATE TABLE Tilaukset (
+    TilausID INT IDENTITY(1,1) PRIMARY KEY,
+    AsiakasID INT NOT NULL,
+    TuoteID INT NOT NULL,
+    Tilauspäivä DATETIME NOT NULL,
+    Määrä INT NOT NULL,
+    Kokonaishinta DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (AsiakasID) REFERENCES Asiakkaat(AsiakasID),
+    FOREIGN KEY (TuoteID) REFERENCES Tuotteet(TuoteID)
+);
+
+CREATE TABLE Tilaukset (
+    TilausID INT IDENTITY(1,1) PRIMARY KEY,
+    AsiakasID INT NOT NULL,
+    TuoteID INT NOT NULL,
+    Tilauspäivä DATETIME NOT NULL,
+    Määrä INT NOT NULL,
+    Kokonaishinta DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (AsiakasID) REFERENCES Asiakkaat(AsiakasID),
+    FOREIGN KEY (TuoteID) REFERENCES Tuotteet(TuoteID)
+);
+
+CREATE TABLE Myyjat (
+    MyyjaID INT IDENTITY(1,1) PRIMARY KEY,
+    Nimi VARCHAR(50) NOT NULL
+);
+ALTER TABLE Tilaukset
+ADD Myyjä INT NOT NULL;
