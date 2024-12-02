@@ -21,20 +21,21 @@ namespace Sovelluskehitys2024
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\k2201452\\Documents\\testitietokanta.mdf;Integrated Security=True;Connect Timeout=30";
+        //C:\USERS\K2201452\DOCUMENTS\LEVYKAUPPA.MDF
+        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\k2201452\\Documents\\levykauppa.mdf;Integrated Security=True;Connect Timeout=30";
         public MainWindow()
         {
             InitializeComponent();
 
             
-            ThemeManager.Current.ChangeTheme(this, "Light.Blue");
+            //ThemeManager.Current.ChangeTheme(this, "Light.Blue");
 
             try
             {
                 PaivitaDataGrid("SELECT * FROM tuotteet", "tuotteet", tuotelista);
                 PaivitaDataGrid("SELECT * FROM asiakkaat", "asiakkaat", asiakaslista);
-                PaivitaDataGrid("SELECT ti.id as id, a.nimi as asiakas, tu.nimi as tuote FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu='0'", "tilaukset", tilauslista);
-                PaivitaDataGrid("SELECT ti.id as id, a.nimi as asiakas, tu.nimi as tuote FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu='1'", "tilaukset", toimitetutlista);
+                //PaivitaDataGrid("SELECT ti.id as id, a.nimi as asiakas, tu.nimi as tuote FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu='0'", "tilaukset", tilauslista);
+                //PaivitaDataGrid("SELECT ti.id as id, a.nimi as asiakas, tu.nimi as tuote FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu='1'", "tilaukset", toimitetutlista);
                 PaivitaComboBox(tuotelista_cb, tuotelista_cb_2);
                 PaivitaAsiakasComboBox();
             }
@@ -147,7 +148,7 @@ namespace Sovelluskehitys2024
             SqlConnection yhteys = new SqlConnection(polku);
             yhteys.Open();
 
-            string kysely = "INSERT INTO tuotteet (nimi, hinta) VALUES ('" + tuotenimi.Text + "'," + tuotehinta.Text + ");";
+            string kysely = "INSERT INTO tuotteet (Artisti, Levyn_Nimi, Hinta) VALUES ('" + artisti.Text + "','" + levynnimi.Text + "'," + levynhinta.Text + ");";
             SqlCommand komento = new SqlCommand(kysely, yhteys);
             komento.ExecuteNonQuery();
 
@@ -177,7 +178,7 @@ namespace Sovelluskehitys2024
             SqlConnection yhteys = new SqlConnection(polku);
             yhteys.Open();
 
-            string kysely = "INSERT INTO asiakkaat (nimi, osoite, puhelin) VALUES ('" + asiakasnimi.Text + "','" + asiakasosoite.Text + "','" + asiakaspuhelin.Text + "');";
+            string kysely = "INSERT INTO asiakkaat (Nimi, osoite, email) VALUES ('" + asiakasnimi.Text + "','" + asiakasosoite.Text + "','" + asiakasemail.Text + "');";
             SqlCommand komento = new SqlCommand(kysely, yhteys);
             komento.ExecuteNonQuery();
 
@@ -195,7 +196,7 @@ namespace Sovelluskehitys2024
             string asiakasID = asiakaslista_cb.SelectedValue.ToString();
             string tuoteID = tuotelista_cb_2.SelectedValue.ToString();
 
-            string sql = "INSERT INTO tilaukset (asiakas_id, tuote_id) VALUES ('" + asiakasID + "','" + tuoteID + "')";
+            string sql = "INSERT INTO Tilaukset (AsiakasID, TuoteID, Myyjä) VALUES ('" + asiakasID + "','" + tuoteID + "','" + asiakasID + "')";
 
             SqlCommand komento = new SqlCommand(sql, yhteys);
             komento.ExecuteNonQuery();
