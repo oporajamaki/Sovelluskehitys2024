@@ -27,15 +27,20 @@
             </TabItem>
             <TabItem Header="Lisää/poista tuote">
                 <Grid>
-                    <Label Content="Artisti" HorizontalAlignment="Left" Margin="50,50,0,0" VerticalAlignment="Top" Width="86"/>
-                    <Label Content="Levy" HorizontalAlignment="Left" Margin="50,100,0,0" VerticalAlignment="Top" Width="86"/>
-                    <Label Content="Hinta" HorizontalAlignment="Left" Margin="50,150,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.581,0.368"/>
-                    <TextBox x:Name="artisti" HorizontalAlignment="Left" Margin="200,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144" Height="26" TextChanged="TextBox_TextChanged"/>
-                    <TextBox x:Name="levy" HorizontalAlignment="Left" Margin="200,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144" Height="26"/>
-                    <TextBox x:Name="hinta" HorizontalAlignment="Left" Margin="200,150,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144" Height="26"/>
-                    <Button Content="Lisää tuote" HorizontalAlignment="Left" Margin="200,220,0,0" VerticalAlignment="Top" Width="144" Height="36" Click="Button_Click_1"/>
-                    <ComboBox x:Name="tuotelista_cb" HorizontalAlignment="Left" Margin="200,270,0,0" VerticalAlignment="Top" Width="144"/>
-                    <Button Content="Poista tuote" HorizontalAlignment="Left" Margin="200,310,0,0" VerticalAlignment="Top" Height="36" Width="144" Click="Button_Click_2"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="37*"/>
+                        <ColumnDefinition Width="188*"/>
+                        <ColumnDefinition Width="569*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Artisti" HorizontalAlignment="Left" Margin="13,50,0,0" VerticalAlignment="Top" Width="86" Grid.Column="1"/>
+                    <Label Content="Levy" HorizontalAlignment="Left" Margin="13,100,0,0" VerticalAlignment="Top" Width="86" Grid.Column="1"/>
+                    <Label Content="Hinta" HorizontalAlignment="Left" Margin="13,150,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.581,0.368" Grid.Column="1"/>
+                    <TextBox x:Name="artisti" HorizontalAlignment="Left" Margin="163,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144" Height="26" TextChanged="TextBox_TextChanged" Grid.ColumnSpan="2" Grid.Column="1"/>
+                    <TextBox x:Name="levy" HorizontalAlignment="Left" Margin="163,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144" Height="26" Grid.ColumnSpan="2" Grid.Column="1"/>
+                    <TextBox x:Name="hinta" HorizontalAlignment="Left" Margin="163,150,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="144" Height="26" Grid.ColumnSpan="2" Grid.Column="1"/>
+                    <Button Content="Lisää tuote" HorizontalAlignment="Left" Margin="163,220,0,0" VerticalAlignment="Top" Width="144" Height="36" Click="Button_Click_1" Grid.ColumnSpan="2" Grid.Column="1"/>
+                    <ComboBox x:Name="tuotelista_cb" HorizontalAlignment="Left" Margin="163,270,0,0" VerticalAlignment="Top" Width="144" Grid.ColumnSpan="2" Grid.Column="1"/>
+                    <Button Content="Poista tuote" HorizontalAlignment="Left" Margin="163,310,0,0" VerticalAlignment="Top" Height="36" Width="144" Click="Button_Click_2" Grid.ColumnSpan="2" Grid.Column="1"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Asiakkaat">
