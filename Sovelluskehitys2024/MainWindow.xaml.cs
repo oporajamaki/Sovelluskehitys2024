@@ -21,7 +21,7 @@ namespace Sovelluskehitys2024
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\k5000833\\Documents\\testitietokanta.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True";
+        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\k2201452\\Documents\\levykauppa.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True";
         public MainWindow()
         {
             InitializeComponent();
@@ -146,7 +146,7 @@ namespace Sovelluskehitys2024
             SqlConnection yhteys = new SqlConnection(polku);
             yhteys.Open();
 
-            string kysely = "INSERT INTO tuotteet (nimi, hinta) VALUES ('" + tuotenimi.Text + "'," + tuotehinta.Text + ");";
+            string kysely = "INSERT INTO tuotteet (artisti, levyn_nimi, hinta) VALUES ('" + artisti.Text + "','" + levy.Text + "'," + hinta.Text +");";
             SqlCommand komento = new SqlCommand(kysely, yhteys);
             komento.ExecuteNonQuery();
 
@@ -176,7 +176,7 @@ namespace Sovelluskehitys2024
             SqlConnection yhteys = new SqlConnection(polku);
             yhteys.Open();
 
-            string kysely = "INSERT INTO asiakkaat (nimi, osoite, puhelin) VALUES ('" + asiakasnimi.Text + "','" + asiakasosoite.Text + "','" + asiakaspuhelin.Text + "');";
+            string kysely = "INSERT INTO asiakkaat (nimi, osoite, email) VALUES ('" + asiakasnimi.Text + "','" + asiakasosoite.Text + "','" + asiakasemail.Text + "');";
             SqlCommand komento = new SqlCommand(kysely, yhteys);
             komento.ExecuteNonQuery();
 
