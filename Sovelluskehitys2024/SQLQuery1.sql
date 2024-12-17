@@ -8,11 +8,12 @@ INSERT INTO tuotteet (nimi, hinta) VALUES ('juusto', 6);
 INSERT INTO asiakkaat (nimi, osoite, puhelin) VALUES ('Masa', 'Kuusikuja 6', '050882682');
 INSERT INTO tilaukset (asiakas_id, tuote_id) VALUES (1,1); 
 
-DELETE FROM tuotteet WHERE id=5;
+DELETE FROM asiakkaat WHERE id=3;
 
 SELECT * FROM tuotteet;
 SELECT * FROM asiakkaat;
 SELECT * FROM tilaukset;
+SELECT * FROM tilaus;
 
 UPDATE tilaukset SET toimitettu=1 WHERE id=1
 
