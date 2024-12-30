@@ -39,6 +39,8 @@ namespace Sovelluskehitys2024
                 PaivitaDataGrid("SELECT * FROM tilaus", "tilaus", tilatut);
                 PaivitaDataGrid("SELECT * FROM myyjat", "myyjat", myyjat);
                 PaivitaDataGrid2();
+                PaivitaDataGrid("SELECT * FROM tilaukset", "tilaukset", tilauslista);
+                PaivitaDataGrid("SELECT * FROM toimitetut", "toimitetut", toimitetutlista);
                 //PaivitaDataGrid("SELECT * FROM tilaus", "tilaus", tilatut);
                 //PaivitaDataGrid("SELECT * FROM tilaukset", "tilaukset", tilatutlista_cb);
                 // toimiiko tämä
@@ -399,7 +401,7 @@ namespace Sovelluskehitys2024
              PaivitaDataGrid("SELECT ti.id as id, a.nimi as asiakas, tu.nimi as tuote FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu='0'", "tilaukset", tilauslista);
          }*/
 
-        private void toimita_tilaus_Click(object sender, RoutedEventArgs e)
+        /*private void toimita_tilaus_Click(object sender, RoutedEventArgs e)
         {
             DataRowView rivinakyma = (DataRowView)((Button)e.Source).DataContext;
             String tilaus_id = rivinakyma[0].ToString();
@@ -416,8 +418,47 @@ namespace Sovelluskehitys2024
 
             PaivitaDataGrid("SELECT ti.id as id, a.nimi as asiakas, tu.nimi as tuote FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu='0'", "tilaukset", tilauslista);
             PaivitaDataGrid("SELECT ti.id as id, a.nimi as asiakas, tu.nimi as tuote FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu='1'", "tilaukset", toimitetutlista);
+        }*/
+        private void toimita_tilaus_Click(object sender, RoutedEventArgs e)
+        {
+            DataRowView rivinakyma = (DataRowView)((Button)e.Source).DataContext;
+            string tilaus_id = rivinakyma[0].ToString();
+
+            using (SqlConnection yhteys = new SqlConnection(polku))
+            {
+                yhteys.Open();
+
+                // 1. Lisää tilaus toimitetut-tauluun
+                string sqlLisays = @"
+            INSERT INTO toimitetut (tilaus_id, toimituspaiva)
+            SELECT tilaus_id, GETDATE()
+            FROM tilaukset
+            WHERE tilaus_id = @tilaus_id;
+        ";
+
+                using (SqlCommand lisaysKomento = new SqlCommand(sqlLisays, yhteys))
+                {
+                    lisaysKomento.Parameters.AddWithValue("@tilaus_id", tilaus_id);
+                    lisaysKomento.ExecuteNonQuery();
+                }
+
+                // 2. Poista tilaus tilaukset-taulusta
+                string sqlPoisto = "DELETE FROM tilaukset WHERE tilaus_id = @tilaus_id;";
+
+                using (SqlCommand poistoKomento = new SqlCommand(sqlPoisto, yhteys))
+                {
+                    poistoKomento.Parameters.AddWithValue("@tilaus_id", tilaus_id);
+                    poistoKomento.ExecuteNonQuery();
+                }
+            }
+
+            // Päivitä datagridit
+            PaivitaDataGrid("SELECT * FROM tilaukset","tilaukset", tilauslista);
+            PaivitaDataGrid("SELECT * FROM toimitetut","toimitetut", toimitetutlista);
+            PaivitaDataGrid2();
         }
-        
+
+
         /*private void toimita_tilaus_Click(object sender, RoutedEventArgs e)
         {
 
@@ -490,7 +531,7 @@ namespace Sovelluskehitys2024
                 "toimitetut", toimitetutlista);
             PaivitaDataGrid2();
         }*/
-        
+
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
@@ -540,6 +581,8 @@ namespace Sovelluskehitys2024
                     MessageBox.Show("Virhe: " + ex.Message);
                 }
                 PaivitaComboBoxTilausID();
+                PaivitaDataGrid("SELECT * FROM tilaus", "tilaus", tilatut);
+                PaivitaDataGrid("SELECT * FROM tilaukset", "tilaukset", tilauslista);
             }
         }
         /*private void Button_Click_7(object sender, RoutedEventArgs e)

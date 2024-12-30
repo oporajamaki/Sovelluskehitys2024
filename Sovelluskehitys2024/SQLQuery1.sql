@@ -14,6 +14,7 @@ SELECT * FROM tuotteet;
 SELECT * FROM asiakkaat;
 SELECT * FROM tilaukset;
 SELECT * FROM tilaus;
+SELECT * FROM toimitetut;
 
 UPDATE tilaukset SET toimitettu=1 WHERE id=1
 
