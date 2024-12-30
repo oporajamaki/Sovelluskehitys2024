@@ -30,7 +30,7 @@ namespace Sovelluskehitys2024
         {
             InitializeComponent();
 
-            ThemeManager.Current.ChangeTheme(this, "Light.Taupe");
+            ThemeManager.Current.ChangeTheme(this, "Light.Olive");
 
             try
             {
@@ -417,12 +417,13 @@ namespace Sovelluskehitys2024
             PaivitaDataGrid("SELECT ti.id as id, a.nimi as asiakas, tu.nimi as tuote FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu='0'", "tilaukset", tilauslista);
             PaivitaDataGrid("SELECT ti.id as id, a.nimi as asiakas, tu.nimi as tuote FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu='1'", "tilaukset", toimitetutlista);
         }
-        /*
-        private void toimita_tilaus_Click(object sender, RoutedEventArgs e)
+        
+        /*private void toimita_tilaus_Click(object sender, RoutedEventArgs e)
         {
+
             DataRowView rivinakyma = (DataRowView)((Button)e.Source).DataContext;
             string tilaus_id = rivinakyma["id"].ToString();
-            string tuote_id = rivinakyma["tuote_id"].ToString();
+            //string tuote_id = rivinakyma["tuote"].ToString();
 
             using (SqlConnection yhteys = new SqlConnection(polku))
             {
@@ -430,37 +431,66 @@ namespace Sovelluskehitys2024
 
                 // Lisää tieto toimitetut-tauluun
                 string insertSql = @"
-            INSERT INTO toimitetut (tilaus_id, tuote_id, toimituspaiva)
-            VALUES (@tilaus_id, @tuote_id, GETDATE());";
+            INSERT INTO toimitetut (tilaus_id,toimituspaiva)
+            VALUES (@tilaus_id,GETDATE());";
 
                 using (SqlCommand insertKomento = new SqlCommand(insertSql, yhteys))
                 {
                     insertKomento.Parameters.AddWithValue("@tilaus_id", tilaus_id);
-                    insertKomento.Parameters.AddWithValue("@tuote_id", tuote_id);
+                    //insertKomento.Parameters.AddWithValue("@tuote_id", tuote_id);
                     insertKomento.ExecuteNonQuery();
                 }
 
-                // Päivitä tilaukset-taulu, merkitse toimitetuksi
-                string updateSql = "UPDATE tilaukset SET toimitettu = 1 WHERE id = @tilaus_id;";
 
-                using (SqlCommand updateKomento = new SqlCommand(updateSql, yhteys))
+                // Poista tilaus tilaukset-taulusta
+                string deleteSql = "DELETE FROM tilaukset WHERE id = @tilaus_id;";
+
+                using (SqlCommand deleteKomento = new SqlCommand(deleteSql, yhteys))
                 {
-                    updateKomento.Parameters.AddWithValue("@tilaus_id", tilaus_id);
-                    updateKomento.ExecuteNonQuery();
+                    deleteKomento.Parameters.AddWithValue("@tilaus_id", tilaus_id);
+                    deleteKomento.ExecuteNonQuery();
                 }
+
+
+
+                // Päivitä tilaukset-taulu, merkitse toimitetuk
+                // si
+                //string updateSql = "UPDATE tilaukset SET toimitettu = 1 WHERE id = @tilaus_id;";
+
+                //using (SqlCommand updateKomento = new SqlCommand(updateSql, yhteys))
+                //{
+                //    updateKomento.Parameters.AddWithValue("@tilaus_id", tilaus_id);
+                //    updateKomento.ExecuteNonQuery();
+                //}
             }
 
-            // Päivitä DataGridit
-            PaivitaDataGrid(
-                "SELECT ti.id as id, tu.id as tuote_id, tu.artisti + ' - ' + tu.levyn_nimi as tuote, ti.maara " +
-                "FROM tilaukset ti JOIN tuotteet tu ON ti.tuote_id = tu.id WHERE ti.toimitettu = 0",
-                "tilaukset", tilauslista);
 
+            // Päivitä DataGridit
+            //PaivitaDataGrid(
+            //    "SELECT ti.id as id, tu.id as tuote_id, tu.artisti + ' - ' + tu.levyn_nimi as tuote, ti.maara " +
+            //    "FROM tilaukset ti JOIN tuotteet tu ON ti.tuote_id = tu.id WHERE ti.toimitettu = 0",
+            //    "tilaukset", tilauslista);
+            //PaivitaDataGrid(
+            //  "SELECT ti.id as id, tu.id as tuote_id, tu.artisti + ' - ' + tu.levyn_nimi as tuote, ti.maara " +
+            //"FROM tilaukset ti JOIN tuotteet tu ON ti.tuote_id = tu.id",
+            // "tilaukset", tilauslista);
+
+            //PaivitaDataGrid(
+            //    "SELECT t.id as id, tu.artisti + ' - ' + tu.levyn_nimi as tuote, t.toimituspaiva " +
+            //  "FROM toimitetut t JOIN tuotteet tu ON t.tuote_id = tu.id",
+            //"toimitetut", toimitetutlista);
+            //PaivitaDataGrid(
+            //  "SELECT t.id as id, tu.artisti + ' - ' + tu.levyn_nimi as tuote, t.toimituspaiva ",
+            //"toimitetut", toimitetutlista);
             PaivitaDataGrid(
                 "SELECT t.id as id, tu.artisti + ' - ' + tu.levyn_nimi as tuote, t.toimituspaiva " +
-                "FROM toimitetut t JOIN tuotteet tu ON t.tuote_id = tu.id",
+                "FROM toimitetut t " +
+                "JOIN tilaukset ti ON t.tilaus_id = ti.id " +
+                "JOIN tuotteet tu ON ti.tuote_id = tu.id",
                 "toimitetut", toimitetutlista);
+            PaivitaDataGrid2();
         }*/
+        
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
@@ -504,10 +534,12 @@ namespace Sovelluskehitys2024
                         PaivitaDataGrid("SELECT * FROM tilaus", "tilaus", tilatut);
                     }
                 }
+                 
                 catch (Exception ex)
                 {
                     MessageBox.Show("Virhe: " + ex.Message);
                 }
+                PaivitaComboBoxTilausID();
             }
         }
         /*private void Button_Click_7(object sender, RoutedEventArgs e)

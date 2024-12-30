@@ -36,3 +36,10 @@ CREATE TABLE toimitetut (
     tuote_id INTEGER REFERENCES tuotteet ON DELETE CASCADE,
     toimituspaiva DATETIME DEFAULT GETDATE()
 );
+CREATE TABLE toimitetut (
+    id INTEGER IDENTITY(1,1) PRIMARY KEY,
+    tilaus_id INTEGER REFERENCES tilaus ON DELETE CASCADE,
+    toimituspaiva DATETIME DEFAULT GETDATE()
+);
+select tuote_id from tilaukset;
+DROP TABLE toimitetut;
