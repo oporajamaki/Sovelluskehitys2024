@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Sovelluskehitys2024"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="Tilaukset" MinHeight="500" Width="800">
+        Title="OLLIN LEVY ja KASETTI" MinHeight="500" Width="800">
     <Grid>
         <Menu DockPanel.Dock ="Top">
             <MenuItem Header="_Tiedosto">
